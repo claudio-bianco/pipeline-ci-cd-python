@@ -1,0 +1,51 @@
+name: CI - Todo API
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-test-sonar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # importante para o SonarCloud ter histórico de commits
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Rodar testes com coverage (pytest-cov)
+        env:
+          PYTHONPATH: .
+        run: |
+          pytest -v --cov=app --cov-report=term-missing --cov-report=xml
+
+      # Opcional: upload do coverage.xml como artifact (debug)
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # necessário para PR decoration
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=SEU_ORG_SEU_REPO
+            -Dsonar.organization=SEU_ORG
+            -Dsonar.python.coverage.reportPaths=coverage.xml
