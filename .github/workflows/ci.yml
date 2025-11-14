@@ -42,10 +42,10 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # necessário para PR decoration
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # necessário para PR decoration
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=SEU_ORG_SEU_REPO
-            -Dsonar.organization=SEU_ORG
+            -Dsonar.projectKey=claudio-bianco_pipeline-ci-cd-python
+            -Dsonar.organization=claudiobianco
             -Dsonar.python.coverage.reportPaths=coverage.xml
