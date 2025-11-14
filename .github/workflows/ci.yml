@@ -49,3 +49,7 @@ jobs:
             -Dsonar.projectKey=claudio-bianco_pipeline-ci-cd-python
             -Dsonar.organization=claudiobianco
             -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.projectName=crud-python-todo-api
+            -Dsonar.sources=app
+            -Dsonar.tests=tests
+            -Dsonar.sourceEncoding=UTF-8
