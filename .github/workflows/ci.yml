@@ -74,10 +74,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=claudio-bianco_pipeline-ci-cd-python
-            -Dsonar.organization=claudiobianco
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.projectName=crud-python-todo-api
+            -Dsonar.organization=${{ env.SONAR_ORG }}
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.projectName=${{ env.SONAR_PROJECT_NAME }}
             -Dsonar.sources=app
+            -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.tests=tests
             -Dsonar.sourceEncoding=UTF-8
