@@ -6,6 +6,13 @@ pip install -r requirements.txt
 # instale pacotes
 pip install fastapi uvicorn
 
+# Rodando a API
+uvicorn app.main:app --reload
+
+A API sobe em http://127.0.0.1:8000
+Documentação Swagger automática: http://127.0.0.1:8000/docs
+Documentação alternativa (Redoc): http://127.0.0.1:8000/redoc
+
 # Healthcheck
 curl -X GET http://127.0.0.1:8000/health
 

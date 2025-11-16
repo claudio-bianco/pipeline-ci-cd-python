@@ -26,6 +26,34 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Ler metadados do app
+        id: meta
+        run: |
+          APP_NAME=$(sed -n 's/^__app_name__ = "\(.*\)"/\1/p' app/version.py)
+          VERSION=$(sed -n 's/^__version__ = "\(.*\)"/\1/p' app/version.py)
+          BUILD=$(sed -n 's/^__build__ = "\(.*\)"/\1/p' app/version.py)
+
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "build=$BUILD" >> $GITHUB_OUTPUT
+
+      - name: Exibir versão
+        run: |
+          echo "Versão detectada: ${{ steps.meta.outputs.app_name }}"
+          echo "Versão detectada: ${{ steps.meta.outputs.version }}"
+          echo "Versão detectada: ${{ steps.meta.outputs.build }}"
+
+      - name: Usar no Docker
+        run: |
+          docker build \
+            --build-arg VERSION=${{ steps.meta.outputs.version }} \
+            --build-arg APP_NAME=${{ steps.meta.outputs.app_name }} \
+            .
+          
+      - name: Atualizar __build__ com SHA
+        run: |
+          sed -i "s/^__build__.*/__build__ = \"${GITHUB_SHA}\"/" app/version.py
+
       - name: Rodar testes com coverage (pytest-cov)
         env:
           PYTHONPATH: .
