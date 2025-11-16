@@ -81,5 +81,5 @@ jobs:
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.tests=tests
             -Dsonar.sourceEncoding=UTF-8
-            -Dsonar.exclusions=version.py
-            -Dsonar.coverage.exclusions=version.py
+            -Dsonar.exclusions=app/version.py
+            -Dsonar.coverage.exclusions=app/version.py
